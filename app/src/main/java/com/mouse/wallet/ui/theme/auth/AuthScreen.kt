@@ -1,8 +1,7 @@
 package com.mouse.wallet.ui.theme.auth
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -14,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.mouse.wallet.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +30,7 @@ fun AuthScreen() {
         TextField(
             value = login,
             onValueChange = { login = it },
-            label = { Text(text = stringResource(R.string.login)) },
+            label = { Text(text = stringResource(R.string.username)) },
             singleLine = true
         )
         TextField(
@@ -39,5 +39,20 @@ fun AuthScreen() {
             label = { Text(text = stringResource(R.string.password)) },
             singleLine = true
         )
+        Row(
+            modifier = Modifier.padding(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            Button(
+                onClick = { /*TODO*/ }
+            ) {
+                Text(text = stringResource(R.string.register))
+            }
+            Button(
+                onClick = { /*TODO*/ }
+            ) {
+                Text(text = stringResource(R.string.log_in))
+            }
+        }
     }
 }
