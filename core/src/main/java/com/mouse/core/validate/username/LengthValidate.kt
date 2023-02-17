@@ -7,13 +7,20 @@ class LengthValidate(
     private val max: Int,
 ) : ValidateStage<String> {
 
+    init {
+        if (min < 0) throw IllegalStateException("Min should be at least 0")
+    }
+
     override fun validate(value: String): Boolean {
-        TODO("Not yet implemented")
+        return value.length in min..max
     }
 
     override val error: Throwable
-        get() = TODO("Not yet implemented")
+        get() = when (min) {
+            0 -> LengthExceedsMaxError(max)
+            else -> LengthOutsideRange(min, max)
+        }
 }
 
-class LengthLessMinError(min: Int) : Throwable("Length cannot be less than $min")
+class LengthOutsideRange(min: Int, max: Int) : Throwable("Length should be between $min and $max")
 class LengthExceedsMaxError(max: Int) : Throwable("Length cannot be more than $max")
