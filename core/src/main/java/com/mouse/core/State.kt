@@ -3,7 +3,6 @@ package com.mouse.core
 import kotlinx.coroutines.flow.Flow
 
 sealed class State<out T : Any> {
-    object Idle : State<Nothing>()
     object Loading : State<Nothing>()
     data class Success<T : Any>(val result: T) : State<T>()
     data class Error(val message: String) : State<Nothing>()
@@ -20,9 +19,11 @@ suspend fun <T : Any> Flow<State<T>>.collectState(
                 onLoading(false)
                 onError(state.message)
             }
-            State.Idle -> onLoading(false)
             State.Loading -> onLoading(true)
-            is State.Success -> onSuccess(state.result)
+            is State.Success -> {
+                onLoading(false)
+                onSuccess(state.result)
+            }
         }
     }
 }

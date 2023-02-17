@@ -1,8 +1,8 @@
-package com.mouse.core.validate.username
+package com.mouse.core.validate.login
 
 import com.mouse.core.validate.ValidateStage
 
-class LengthValidate(
+class LengthStage(
     private val min: Int = 0,
     private val max: Int,
 ) : ValidateStage<String> {
