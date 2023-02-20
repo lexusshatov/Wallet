@@ -42,21 +42,24 @@ abstract class BaseInteraction<in Params, out Result : Any>(
                     mutableState.emit(State.Success(result))
                 } catch (error: CancellationException) {
                     logger.log("Network", "Coroutine cancelled: ${this@BaseInteraction}")
-                } catch (error: Exception) {
-                    val message = error.localizedMessage.ifEmpty { "Something went wrong!" }
-                    mutableState.emit(State.Error(message))
+                } catch (exception: Exception) {
+                    val error: Throwable = if (exception.localizedMessage.isNotEmpty()) {
+                        exception
+                    } else SomethingWentWrongError()
+                    mutableState.emit(State.Error(mapOf(BASE_ERROR_KEY to error)))
                 }
-            } else {
-                val errors = validationResult.errors
-                    .mapNotNull { it.message }
-                    .joinToString("\n")
-                mutableState.emit(State.Error(errors))
-            }
+            } else mutableState.emit(State.Error(validationResult.errors))
             job = null
         }
     }
 
     abstract suspend fun process(params: Params): Result
+
+    companion object {
+        const val BASE_ERROR_KEY = "error"
+    }
 }
 
 operator fun Interaction<Void, *>.invoke(): Unit = invoke(Void)
+
+private class SomethingWentWrongError : Throwable("Something went wrong!")
