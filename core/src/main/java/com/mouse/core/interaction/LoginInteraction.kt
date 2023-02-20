@@ -17,5 +17,6 @@ class LoginInteraction(
     data class Params(
         val login: String,
         val password: String,
+        val age: Int
     )
 }

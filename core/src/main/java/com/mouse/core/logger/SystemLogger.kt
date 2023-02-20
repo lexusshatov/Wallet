@@ -1,5 +1,5 @@
 package com.mouse.core.logger
 
 object SystemLogger : Logger {
-    override fun log(message: String) = println(message)
+    override fun log(tag: String, message: String) = println(message)
 }
