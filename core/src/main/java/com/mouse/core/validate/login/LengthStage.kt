@@ -5,6 +5,7 @@ import com.mouse.core.validate.ValidateStage
 class LengthStage(
     private val min: Int = 0,
     private val max: Int,
+    override val key: String,
 ) : ValidateStage<String> {
 
     init {

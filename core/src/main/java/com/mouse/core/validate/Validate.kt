@@ -10,14 +10,17 @@ fun interface Validate<T> {
     }
 }
 
-open class BaseValidate<T>(private val validates: List<ValidateStage<T>>) : Validate<T> {
+open class BaseValidate<T>(private val validates: List<ValidatePair<T, Any>>) :
+    Validate<T> {
 
-    constructor(vararg validates: ValidateStage<T>) : this(validates.toList())
+    constructor(vararg validates: ValidatePair<T, Any>) : this(validates.toList())
 
     override fun validate(value: T): Validate.Result {
         val errors = mutableMapOf<String, Throwable>()
-        validates.forEach { stage ->
-            if (!stage.validate(value)) {
+        validates.forEach { validatePair ->
+            val stage = validatePair.stage
+            val element = validatePair.getElement(value)
+            if (!stage.validate(element)) {
                 errors += stage.key to stage.error
             }
         }
