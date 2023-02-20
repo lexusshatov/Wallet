@@ -53,7 +53,7 @@ abstract class BaseInteraction<in Params, out Result : Any>(
         }
     }
 
-    abstract suspend fun process(params: Params): Result
+    protected abstract suspend fun process(params: Params): Result
 
     companion object {
         const val BASE_ERROR_KEY = "error"
