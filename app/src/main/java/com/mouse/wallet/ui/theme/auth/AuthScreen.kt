@@ -1,10 +1,7 @@
 package com.mouse.wallet.ui.theme.auth
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -15,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mouse.core.State
 import com.mouse.core.data.User
 import com.mouse.core.interaction.LoginInteraction
+import com.mouse.core.validate.login.LoginValidate
 import com.mouse.wallet.R
 import com.mouse.wallet.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,18 +24,29 @@ fun AuthScreen(
 ) {
     val loginResult: Flow<State<User>> by authViewModel.login
 
+    var isLoading: Boolean by remember { mutableStateOf(false) }
     var login: String by rememberSaveable { mutableStateOf("") }
-    var loginError: String by remember {
-        mutableStateOf("")
-    }
     var password: String by rememberSaveable { mutableStateOf("") }
-    var passwordError: String by remember {
-        mutableStateOf("")
-    }
+    var loginError: String by remember { mutableStateOf("") }
+    var passwordError: String by remember { mutableStateOf("") }
+
+    var user by remember { mutableStateOf(User()) }
 
     LaunchedEffect(key1 = "collect") {
         loginResult.collect { state ->
-            println(state)
+            when (state) {
+                is State.Error -> {
+                    isLoading = false
+                    val errors = state.errors.mapValues { it.value.localizedMessage.orEmpty() }
+                    loginError = errors.getOrDefault(LoginValidate.LOGIN_KEY, "")
+                    passwordError = errors.getOrDefault(LoginValidate.PASSWORD_KEY, "")
+                }
+                State.Loading -> isLoading = true
+                is State.Success -> {
+                    isLoading = false
+                    user = state.result
+                }
+            }
         }
     }
 
@@ -49,15 +58,25 @@ fun AuthScreen(
     ) {
         TextField(
             value = login,
-            onValueChange = { login = it },
+            onValueChange = {
+                login = it
+                loginError = ""
+            },
             label = { Text(text = stringResource(R.string.username)) },
-            singleLine = true
+            singleLine = true,
+            isError = loginError.isNotEmpty(),
+            supportingText = { Text(loginError) }
         )
         TextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = {
+                password = it
+                passwordError = ""
+            },
             label = { Text(text = stringResource(R.string.password)) },
-            singleLine = true
+            singleLine = true,
+            isError = passwordError.isNotEmpty(),
+            supportingText = { Text(passwordError) }
         )
         Row(
             modifier = Modifier.padding(10.dp),
@@ -80,5 +99,10 @@ fun AuthScreen(
                 Text(text = stringResource(R.string.log_in))
             }
         }
+
+        if (isLoading) {
+            CircularProgressIndicator()
+        }
+        Text(text = user.toString())
     }
 }
