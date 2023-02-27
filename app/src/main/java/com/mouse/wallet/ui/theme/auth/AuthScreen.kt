@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mouse.core.State
+import com.mouse.core.collectState
 import com.mouse.core.data.User
 import com.mouse.core.interaction.LoginInteraction
 import com.mouse.core.validate.login.LoginValidate
@@ -33,21 +34,15 @@ fun AuthScreen(
     var user by remember { mutableStateOf(User()) }
 
     LaunchedEffect(key1 = "collect") {
-        loginResult.collect { state ->
-            when (state) {
-                is State.Error -> {
-                    isLoading = false
-                    val errors = state.errors.mapValues { it.value.localizedMessage.orEmpty() }
-                    loginError = errors.getOrDefault(LoginValidate.LOGIN_KEY, "")
-                    passwordError = errors.getOrDefault(LoginValidate.PASSWORD_KEY, "")
-                }
-                State.Loading -> isLoading = true
-                is State.Success -> {
-                    isLoading = false
-                    user = state.result
+        loginResult.collectState(
+            onLoadingChange = { isLoading = it },
+            onError = { key, error ->
+                when (key) {
+                    LoginValidate.LOGIN_KEY -> loginError = error
+                    LoginValidate.PASSWORD_KEY -> passwordError = error
                 }
             }
-        }
+        ) { user = it }
     }
 
 
