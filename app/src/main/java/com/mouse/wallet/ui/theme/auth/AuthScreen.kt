@@ -11,16 +11,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mouse.core.State
+import com.mouse.core.data.User
+import com.mouse.core.interaction.LoginInteraction
 import com.mouse.wallet.R
+import com.mouse.wallet.viewmodel.AuthViewModel
+import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthScreen() {
+fun AuthScreen(
+    authViewModel: AuthViewModel = viewModel(),
+) {
+    val loginResult: Flow<State<User>> by authViewModel.login
+
     var login: String by rememberSaveable { mutableStateOf("") }
     var loginError: String by remember {
         mutableStateOf("")
     }
     var password: String by rememberSaveable { mutableStateOf("") }
+    var passwordError: String by remember {
+        mutableStateOf("")
+    }
+
+    LaunchedEffect(key1 = "collect") {
+        loginResult.collect { state ->
+            println(state)
+        }
+    }
+
 
     Column(
         modifier = Modifier.fillMaxHeight(),
@@ -49,7 +69,13 @@ fun AuthScreen() {
                 Text(text = stringResource(R.string.register))
             }
             Button(
-                onClick = { /*TODO*/ }
+                onClick = {
+                    val loginParams = LoginInteraction.Params(
+                        login = login,
+                        password = password
+                    )
+                    authViewModel.login(loginParams)
+                }
             ) {
                 Text(text = stringResource(R.string.log_in))
             }
