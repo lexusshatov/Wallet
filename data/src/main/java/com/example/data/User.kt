@@ -1,4 +1,4 @@
-package com.mouse.core.data
+package com.example.data
 
 import kotlinx.serialization.Serializable
 

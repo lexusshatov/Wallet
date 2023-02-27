@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.data.User
 import com.mouse.core.State
 import com.mouse.core.collectState
-import com.mouse.core.data.User
 import com.mouse.core.interaction.LoginInteraction
 import com.mouse.core.validate.login.LoginValidate
 import com.mouse.wallet.R
