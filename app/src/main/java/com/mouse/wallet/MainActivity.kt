@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mouse.wallet.ui.theme.WalletTheme
-import com.mouse.wallet.ui.theme.auth.AuthScreen
+import com.mouse.wallet.ui.auth.AuthScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

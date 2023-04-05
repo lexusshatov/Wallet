@@ -1,4 +1,4 @@
-package com.mouse.wallet.ui.theme.auth
+package com.mouse.wallet.ui.auth
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.data.User
 import com.mouse.core.State
 import com.mouse.core.collectState
@@ -17,11 +16,12 @@ import com.mouse.core.validate.login.LoginValidate
 import com.mouse.wallet.R
 import com.mouse.wallet.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.Flow
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(
-    authViewModel: AuthViewModel = viewModel(),
+    authViewModel: AuthViewModel = koinViewModel(),
 ) {
     val loginResult: Flow<State<User>> by authViewModel.login
 

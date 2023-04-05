@@ -1,4 +1,4 @@
-package com.mouse.core
+package com.mouse.core.api
 
 import com.example.data.User
 
