@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -72,12 +73,15 @@ fun WalletButton(
         contentPadding = if (loading) PaddingValues(all = 0.dp) else contentPadding,
         interactionSource = interactionSource,
     ) {
+        val verticalPadding =
+            contentPadding.calculateTopPadding() + contentPadding.calculateBottomPadding()
+        val dpSize = size.toDpSize() - DpSize(width = 0.dp, height = verticalPadding)
         if (loading) {
             LottieAnimation(
                 composition = composition,
                 iterations = LottieConstants.IterateForever,
                 modifier = modifier
-                    .requiredSize(size.toDpSize()),
+                    .requiredSize(dpSize),
             )
         } else content()
     }
