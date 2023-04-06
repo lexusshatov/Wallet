@@ -43,7 +43,8 @@ abstract class BaseInteraction<in Params, out Result : Any>(
                 } catch (error: CancellationException) {
                     logger.log("Network", "Coroutine cancelled: ${this@BaseInteraction}")
                 } catch (exception: Exception) {
-                    val error: Throwable = if (exception.localizedMessage.isNotEmpty()) {
+                    val message = exception.localizedMessage.orEmpty()
+                    val error: Throwable = if (message.isNotEmpty()) {
                         exception
                     } else SomethingWentWrongError()
                     mutableState.emit(State.Error(mapOf(BASE_ERROR_KEY to error)))

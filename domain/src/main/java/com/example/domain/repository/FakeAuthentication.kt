@@ -6,6 +6,7 @@ import kotlinx.coroutines.delay
 
 class FakeAuthentication : Authentication {
     override suspend fun login(username: String, password: String): User {
+        throw IllegalStateException()
         delay(2000)
         return User(firstName = "Oleh", lastName = "Shatov")
     }
