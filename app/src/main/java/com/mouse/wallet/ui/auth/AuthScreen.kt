@@ -14,6 +14,7 @@ import com.mouse.core.collectState
 import com.mouse.core.interaction.LoginInteraction
 import com.mouse.core.validate.login.LoginValidate
 import com.mouse.wallet.R
+import com.mouse.wallet.ui.component.WalletButton
 import com.mouse.wallet.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
@@ -25,7 +26,7 @@ fun AuthScreen(
 ) {
     val loginResult: Flow<State<User>> by authViewModel.login
 
-    var isLoading: Boolean by remember { mutableStateOf(false) }
+    var isLoadingLogin: Boolean by remember { mutableStateOf(false) }
     var login: String by rememberSaveable { mutableStateOf("") }
     var password: String by rememberSaveable { mutableStateOf("") }
     var loginError: String by remember { mutableStateOf("") }
@@ -35,7 +36,7 @@ fun AuthScreen(
 
     LaunchedEffect(key1 = "collect") {
         loginResult.collectState(
-            onLoadingChange = { isLoading = it },
+            onLoadingChange = { isLoadingLogin = it },
             onError = { key, error ->
                 when (key) {
                     LoginValidate.LOGIN_KEY -> loginError = error
@@ -77,27 +78,25 @@ fun AuthScreen(
             modifier = Modifier.padding(10.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            Button(
-                onClick = { /*TODO*/ }
+            WalletButton(
+                onClick = { /*TODO*/ },
             ) {
                 Text(text = stringResource(R.string.register))
             }
-            Button(
+            WalletButton(
                 onClick = {
                     val loginParams = LoginInteraction.Params(
                         login = login,
                         password = password
                     )
                     authViewModel.login(loginParams)
-                }
+                },
+                loading = isLoadingLogin
             ) {
                 Text(text = stringResource(R.string.log_in))
             }
         }
 
-        if (isLoading) {
-            CircularProgressIndicator()
-        }
         Text(text = user.toString())
     }
 }
