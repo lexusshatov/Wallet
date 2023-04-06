@@ -1,7 +1,8 @@
 package com.mouse.wallet.ui.auth
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import com.mouse.core.interaction.BaseInteraction.Companion.BASE_ERROR_KEY
 import com.mouse.core.interaction.LoginInteraction
 import com.mouse.core.validate.login.LoginValidate
 import com.mouse.wallet.R
+import com.mouse.wallet.ui.Screen
 import com.mouse.wallet.ui.component.WalletButton
 import com.mouse.wallet.viewmodel.AuthViewModel
 import kotlinx.coroutines.flow.Flow
@@ -25,9 +27,6 @@ import org.koin.androidx.compose.koinViewModel
 fun AuthScreen(
     authViewModel: AuthViewModel = koinViewModel(),
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
     val loginResult: Flow<State<User>> by authViewModel.login
     var user by remember { mutableStateOf(User()) }
 
@@ -37,24 +36,7 @@ fun AuthScreen(
     var loginError: String by remember { mutableStateOf("") }
     var passwordError: String by remember { mutableStateOf("") }
 
-    LaunchedEffect(key1 = "collect") {
-        loginResult.collectState(
-            onLoadingChange = { isLoadingLogin = it },
-            onError = { key, error ->
-                when (key) {
-                    LoginValidate.LOGIN_KEY -> loginError = error
-                    LoginValidate.PASSWORD_KEY -> passwordError = error
-                    BASE_ERROR_KEY -> scope.launch {
-                        snackbarHostState.showSnackbar(error)
-                    }
-                }
-            }
-        ) { user = it }
-    }
-
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) {
+    Screen { screenState ->
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,6 +88,21 @@ fun AuthScreen(
             }
 
             Text(text = user.toString())
+        }
+
+        LaunchedEffect(key1 = "collect") {
+            loginResult.collectState(
+                onLoadingChange = { isLoadingLogin = it },
+                onError = { key, error ->
+                    when (key) {
+                        LoginValidate.LOGIN_KEY -> loginError = error
+                        LoginValidate.PASSWORD_KEY -> passwordError = error
+                        BASE_ERROR_KEY -> screenState.scope.launch {
+                            screenState.snackbarHostState.showSnackbar(error)
+                        }
+                    }
+                }
+            ) { user = it }
         }
     }
 }
