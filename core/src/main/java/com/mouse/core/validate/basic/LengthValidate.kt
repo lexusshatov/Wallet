@@ -22,5 +22,5 @@ class LengthValidate(
     }
 }
 
-class LengthOutsideRange(min: Int, max: Int) : Throwable("Length should be between $min and $max")
-class LengthExceedsMaxError(max: Int) : Throwable("Length cannot be more than $max")
+class LengthOutsideRange(min: Int, max: Int) : Exception("Length should be between $min and $max")
+class LengthExceedsMaxError(max: Int) : Exception("Length cannot be more than $max")
