@@ -7,15 +7,15 @@ import androidx.navigation.navigation
 import com.mouse.wallet.ui.ScreenState
 import com.mouse.wallet.ui.navigation.Graph
 import com.mouse.wallet.ui.navigation.Screen
-import com.mouse.wallet.ui.screen.home.HomeScreen
+import com.mouse.wallet.ui.screen.exchange.ExchangeScreen
 
-fun NavGraphBuilder.coinsGraph(
+fun NavGraphBuilder.exchangeGraph(
     navController: NavController,
     screenState: ScreenState,
 ) {
-    navigation(startDestination = Screen.Home.route, route = Graph.Coins.route) {
-        composable(Screen.Home.route) {
-            HomeScreen(screenState)
+    navigation(startDestination = Screen.Exchange.route, route = Graph.Exchange.route) {
+        composable(Screen.Exchange.route) {
+            ExchangeScreen(screenState)
         }
     }
 }

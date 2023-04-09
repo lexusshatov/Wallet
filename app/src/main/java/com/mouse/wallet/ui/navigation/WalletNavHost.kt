@@ -8,8 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.mouse.wallet.ui.ScreenState
-import com.mouse.wallet.ui.navigation.graph.homeGraph
+import com.mouse.wallet.ui.navigation.graph.coinsGraph
+import com.mouse.wallet.ui.navigation.graph.exchangeGraph
 import com.mouse.wallet.ui.navigation.graph.loginGraph
+import com.mouse.wallet.ui.navigation.graph.profileGraph
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -25,6 +27,8 @@ fun WalletNavHost(
         startDestination = Graph.Login.route
     ) {
         loginGraph(navController, screenState)
-        homeGraph(navController, screenState)
+        coinsGraph(navController, screenState)
+        exchangeGraph(navController, screenState)
+        profileGraph(navController, screenState)
     }
 }

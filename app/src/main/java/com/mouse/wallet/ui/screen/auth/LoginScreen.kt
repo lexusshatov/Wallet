@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+//TODO move screen state to sharedviewmodel
 @Composable
 fun LoginScreen(
     screenState: ScreenState,
