@@ -8,3 +8,6 @@ data class User(
     val firstName: String = "",
     val lastName: String = "",
 )
+
+val User.isSignedIn: Boolean
+    get() = id != 0

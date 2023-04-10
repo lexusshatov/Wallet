@@ -11,10 +11,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.data.isSignedIn
+import com.mouse.wallet.viewmodel.UserViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WalletNavigationBar(
     navController: NavController,
+    userViewModel: UserViewModel = koinViewModel(),
 ) {
     val items = listOf(
         BottomNavItem.Coins,
@@ -31,13 +35,8 @@ fun WalletNavigationBar(
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,
                 onClick = {
-                    navController.navigate(item.route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) { saveState = true }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    if (!userViewModel.user.isSignedIn) return@NavigationBarItem
+                    navController.navigate(item.route)
                 }
             )
         }

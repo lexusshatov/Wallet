@@ -1,11 +1,11 @@
 package com.example.domain.repository
 
 import com.example.data.User
-import com.mouse.core.api.Authentication
+import com.mouse.core.api.AuthenticationRepository
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
-class FakeAuthentication : Authentication {
+class FakeAuthenticationRepository : AuthenticationRepository {
     override suspend fun login(username: String, password: String): User {
         delay(2000)
         return if (Random.nextBoolean()) {
