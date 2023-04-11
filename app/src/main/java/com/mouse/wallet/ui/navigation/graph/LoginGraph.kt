@@ -15,7 +15,7 @@ fun NavGraphBuilder.loginGraph(
 ) {
     navigation(startDestination = Screen.Login.route, route = Graph.Login.route) {
         composable(Screen.Login.route) {
-            LoginScreen(screenState) { navController.navigate(Screen.Home.route) }
+            LoginScreen(screenState) { navController.navigate(Screen.Currency.route) }
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.mouse.wallet
 
 import android.app.Application
+import com.example.domain.di.domainModule
 import com.mouse.wallet.di.authModule
+import com.mouse.wallet.di.currencyModule
 import com.mouse.wallet.di.mainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -14,7 +16,9 @@ class WalletApp : Application() {
             androidContext(this@WalletApp)
             modules(
                 mainModule,
-                authModule
+                authModule,
+                domainModule,
+                currencyModule
             )
         }
     }

@@ -5,7 +5,7 @@ import com.mouse.core.api.UserRepository
 import kotlin.random.Random
 
 class FakeUserRepository : UserRepository {
-    override val user: User = if (Random.nextBoolean()) {
+    override val user: User = if (true) {
         User(id = 1)
     } else User(id = 0)
 }
