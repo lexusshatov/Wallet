@@ -7,17 +7,17 @@ import com.mouse.core.api.CurrencyRepository
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface CurrencyService : CurrencyRepository {
+interface CurrencyService {
 
     @GET("convert")
-    override suspend fun convert(
+    suspend fun convert(
         @Query("base") base: Currency,
         @Query("to") to: Currency,
         @Query("amount") amount: Double,
     ): Convert
 
     @GET("rates")
-    override suspend fun rates(
+    suspend fun rates(
         @Query("base") base: Currency,
     ): Rates
 }

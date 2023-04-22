@@ -11,16 +11,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class CurrencyViewModel(
-    private val currencyRepository: CurrencyRepository,
+    currencyRepository: CurrencyRepository,
 ) : ViewModel() {
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val rates = currencyRepository.rates(Currency.USD)
-            _rates.value = rates
-        }
-    }
-
-    private val _rates = MutableStateFlow(Rates())
+    private val _rates = currencyRepository.rates(Currency.USD)
     val rates: Flow<Rates> = _rates
 }
