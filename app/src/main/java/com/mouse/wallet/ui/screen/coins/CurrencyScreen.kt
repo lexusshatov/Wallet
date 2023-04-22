@@ -88,9 +88,9 @@ fun CurrencyCard(currency: Currency) {
                 )
                 Text(
                     text = currency.toString(),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = Color.DarkGray,
-                    fontWeight = FontWeight.Light
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         }
