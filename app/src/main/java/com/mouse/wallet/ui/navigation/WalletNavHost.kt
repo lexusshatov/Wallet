@@ -4,6 +4,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -19,6 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WalletNavHost(
+    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -30,6 +32,7 @@ fun WalletNavHost(
         Graph.Coins.route
     } else Graph.Login.route
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = startDestination
     ) {

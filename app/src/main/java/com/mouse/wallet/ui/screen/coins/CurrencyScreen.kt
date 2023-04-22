@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,7 +45,10 @@ fun CurrencyScreen(
             text = currencyValue.toString(),
             style = MaterialTheme.typography.displayMedium
         )
-        Card(colors = CardDefaults.cardColors(containerColor = Color.LightGray)) {
+        Card(
+            colors = CardDefaults.cardColors(containerColor = Color.LightGray),
+            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+        ) {
             LazyColumn {
                 rates.rates.forEach {
                     val rate: Rate = it.key to it.value
