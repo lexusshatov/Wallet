@@ -15,10 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.data.Currency
 import com.example.data.Rates
+import com.mouse.wallet.data.CurrencyUI
+import com.mouse.wallet.data.toUi
 import com.mouse.wallet.ui.ScreenState
 import com.mouse.wallet.ui.theme.DarkWight
 import com.mouse.wallet.ui.theme.Green
@@ -37,7 +40,7 @@ fun CurrencyScreen(
         modifier = Modifier.padding(vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CurrencyCard(currency = rates.base)
+        CurrencyCard(currency = rates.base.toUi())
         val currencyValue = (0..1000).random()
         Text(
             modifier = Modifier
@@ -64,7 +67,7 @@ fun CurrencyScreen(
 }
 
 @Composable
-fun CurrencyCard(currency: Currency) {
+fun CurrencyCard(currency: CurrencyUI) {
     Card(
         modifier = Modifier.padding(all = 10.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray)
@@ -91,7 +94,7 @@ fun CurrencyCard(currency: Currency) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = currency.toString(),
+                    text = stringResource(id = currency.titleRes),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.DarkGray,
                     fontWeight = FontWeight.SemiBold
