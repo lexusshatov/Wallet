@@ -38,5 +38,5 @@ enum class Currency {
     ZAR,
 
     @SerialName("")
-    Nothing
+    Nothing;
 }

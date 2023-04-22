@@ -7,4 +7,5 @@
     <string name="coins">Coins</string>
     <string name="exchange">Exchange</string>
     <string name="profile">Profile</string>
+    <string name="usd_title">United States dollar</string>
 </resources>

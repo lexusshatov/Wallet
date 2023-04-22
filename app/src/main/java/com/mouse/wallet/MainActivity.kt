@@ -21,9 +21,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 
             WalletTheme {
-                val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     containerColor = MaterialTheme.colorScheme.background,

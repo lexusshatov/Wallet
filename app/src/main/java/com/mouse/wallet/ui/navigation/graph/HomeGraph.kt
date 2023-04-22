@@ -7,7 +7,7 @@ import androidx.navigation.navigation
 import com.mouse.wallet.ui.ScreenState
 import com.mouse.wallet.ui.navigation.Graph
 import com.mouse.wallet.ui.navigation.Screen
-import com.mouse.wallet.ui.screen.home.CurrencyScreen
+import com.mouse.wallet.ui.screen.coins.CurrencyScreen
 
 fun NavGraphBuilder.coinsGraph(
     navController: NavController,
