@@ -2,9 +2,9 @@
 
 package com.example.domain.di
 
-import com.example.domain.repository.currency.CurrencyRepositoryCloud
+import com.example.domain.repository.currency.cloud.CurrencyRepositoryCloud
 import com.example.domain.repository.currency.CurrencyRepositoryDecorator
-import com.example.domain.repository.currency.CurrencyRepositoryLocal
+import com.example.domain.repository.currency.local.CurrencyRepositoryLocal
 import com.example.domain.service.CurrencyService
 import com.example.domain.util.RetrofitUtil
 import com.mouse.core.api.CurrencyRepository

@@ -1,4 +1,4 @@
-package com.example.domain.repository.currency
+package com.example.domain.repository.currency.cloud
 
 import com.example.data.Convert
 import com.example.data.Currency
@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.flow
 class CurrencyRepositoryCloud(
     private val currencyService: CurrencyService,
 ) : CurrencyRepository {
+
     override fun convert(base: Currency, to: Currency, amount: Double): Flow<Convert> =
         flow {
             emit(currencyService.convert(base, to, amount))

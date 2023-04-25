@@ -1,4 +1,4 @@
-package com.example.domain.repository.currency
+package com.example.domain.repository.currency.local
 
 import com.example.data.Convert
 import com.example.data.Currency
@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class CurrencyRepositoryLocal : CurrencyRepository {
+
     override fun convert(base: Currency, to: Currency, amount: Double): Flow<Convert> {
         return flow { emit(Convert(base = base, to = to, converted = 15.5)) }
     }
