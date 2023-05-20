@@ -23,10 +23,10 @@ import com.example.data.Rates
 import com.mouse.wallet.R
 import com.mouse.wallet.data.CurrencyUI
 import com.mouse.wallet.data.toUi
-import com.mouse.wallet.ui.ScreenState
 import com.mouse.wallet.ui.theme.DarkWight
 import com.mouse.wallet.ui.theme.Green
 import com.mouse.wallet.ui.theme.LightGraySmooth
+import com.mouse.wallet.util.formatted
 import com.mouse.wallet.viewmodel.CurrencyViewModel
 import org.koin.androidx.compose.koinViewModel
 import kotlin.random.Random
@@ -35,47 +35,36 @@ typealias Rate = Pair<Currency, Double>
 
 @Composable
 fun CurrencyScreen(
-    screenState: ScreenState,
     currencyViewModel: CurrencyViewModel = koinViewModel(),
 ) {
+    val base: Currency by currencyViewModel.currency.collectAsState(initial = Currency.USD)
     val rates: Rates by currencyViewModel.rates.collectAsState(initial = Rates())
 
     Column(
         modifier = Modifier.padding(vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CurrencyCard(currency = rates.base.toUi())
-        val currencyValue = (0..1000).random() + Random.nextDouble(0.0, 1.0)
-        Text(
-            modifier = Modifier.padding(top = 4.dp),
-            text = stringResource(R.string.my_balance),
-            style = MaterialTheme.typography.labelLarge,
-            color = Color.Gray
-        )
-        Text(
-            text = String.format("%.2f", currencyValue),
-            style = MaterialTheme.typography.displaySmall
-        )
-        val toUsd = rates.rates.entries
-            .firstOrNull() { it.key == Currency.USD }
-            ?.let { usd -> usd.value * currencyValue }
-            ?: 0.0
-        Text(
-            text = stringResource(R.string.approximately_to_usd, toUsd),
-            style = MaterialTheme.typography.labelLarge,
-            color = Color.Gray
-        )
+        CurrencyCard(currency = base.toUi())
+        BalanceBlock(rates = rates)
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp)
+        ) {
+            Text(modifier = Modifier.weight(1f), text = stringResource(R.string.name))
+            Text(modifier = Modifier.weight(1f), text = stringResource(R.string.price))
+            Text(modifier = Modifier.weight(1f), text = stringResource(R.string._24h_change))
+        }
         Card(
             modifier = Modifier.padding(top = 8.dp),
             colors = CardDefaults.cardColors(containerColor = DarkWight),
             shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
         ) {
             LazyColumn {
-                rates.rates.forEach {
-                    val rate: Rate = it.key to it.value
+                rates.rates.forEach { (currency, rate) ->
                     item {
-                        CurrencyItem(rate = rate) {
-                            //TODO on click
+                        CurrencyItem(rate = currency to rate) {
+                            currencyViewModel.setCurrency(currency)
                         }
                         Divider(
                             modifier = Modifier.padding(horizontal = 12.dp),
@@ -127,17 +116,40 @@ fun CurrencyCard(currency: CurrencyUI) {
 }
 
 @Composable
+fun BalanceBlock(rates: Rates) {
+    val currencyValue = (0..1000).random() + Random.nextDouble(0.0, 1.0)
+    Text(
+        modifier = Modifier.padding(top = 4.dp),
+        text = stringResource(R.string.my_balance),
+        style = MaterialTheme.typography.labelLarge,
+        color = Color.Gray
+    )
+    Text(
+        text = currencyValue.formatted(),
+        style = MaterialTheme.typography.displaySmall
+    )
+    val toUsd = rates.rates.entries
+        .firstOrNull() { it.key == Currency.USD }
+        .let { usd -> (usd?.value ?: 1.0) * currencyValue }
+    Text(
+        text = stringResource(R.string.approximately_to_usd, toUsd),
+        style = MaterialTheme.typography.labelLarge,
+        color = Color.Gray
+    )
+}
+
+@Composable
 fun CurrencyItem(
     modifier: Modifier = Modifier,
     rate: Rate,
     onClick: () -> Unit,
 ) {
     val currency = rate.first
-    val price = rate.second
+    val price = 1.0 / rate.second
 
     Row(
         modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
             .clickable { onClick() }
             .fillMaxWidth()
     ) {
@@ -148,7 +160,12 @@ fun CurrencyItem(
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = price.toString(),
+            text = price.formatted(),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = "0.0%",
             style = MaterialTheme.typography.bodyMedium
         )
     }

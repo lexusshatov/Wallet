@@ -15,7 +15,7 @@ fun NavGraphBuilder.coinsGraph(
 ) {
     navigation(startDestination = Screen.Currency.route, route = Graph.Coins.route) {
         composable(Screen.Currency.route) {
-            CurrencyScreen(screenState)
+            CurrencyScreen()
         }
     }
 }
