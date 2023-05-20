@@ -20,13 +20,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.data.Currency
 import com.example.data.Rates
+import com.mouse.wallet.R
 import com.mouse.wallet.data.CurrencyUI
 import com.mouse.wallet.data.toUi
 import com.mouse.wallet.ui.ScreenState
 import com.mouse.wallet.ui.theme.DarkWight
 import com.mouse.wallet.ui.theme.Green
+import com.mouse.wallet.ui.theme.LightGraySmooth
 import com.mouse.wallet.viewmodel.CurrencyViewModel
 import org.koin.androidx.compose.koinViewModel
+import kotlin.random.Random
 
 typealias Rate = Pair<Currency, Double>
 
@@ -36,20 +39,35 @@ fun CurrencyScreen(
     currencyViewModel: CurrencyViewModel = koinViewModel(),
 ) {
     val rates: Rates by currencyViewModel.rates.collectAsState(initial = Rates())
+
     Column(
         modifier = Modifier.padding(vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CurrencyCard(currency = rates.base.toUi())
-        val currencyValue = (0..1000).random()
+        val currencyValue = (0..1000).random() + Random.nextDouble(0.0, 1.0)
         Text(
-            modifier = Modifier
-                .padding(vertical = 8.dp),
-            text = currencyValue.toString(),
-            style = MaterialTheme.typography.displayMedium
+            modifier = Modifier.padding(top = 4.dp),
+            text = stringResource(R.string.my_balance),
+            style = MaterialTheme.typography.labelLarge,
+            color = Color.Gray
+        )
+        Text(
+            text = String.format("%.2f", currencyValue),
+            style = MaterialTheme.typography.displaySmall
+        )
+        val toUsd = rates.rates.entries
+            .firstOrNull() { it.key == Currency.USD }
+            ?.let { usd -> usd.value * currencyValue }
+            ?: 0.0
+        Text(
+            text = stringResource(R.string.approximately_to_usd, toUsd),
+            style = MaterialTheme.typography.labelLarge,
+            color = Color.Gray
         )
         Card(
-            colors = CardDefaults.cardColors(containerColor = Color.LightGray),
+            modifier = Modifier.padding(top = 8.dp),
+            colors = CardDefaults.cardColors(containerColor = DarkWight),
             shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
         ) {
             LazyColumn {
@@ -59,6 +77,10 @@ fun CurrencyScreen(
                         CurrencyItem(rate = rate) {
                             //TODO on click
                         }
+                        Divider(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            color = Color.DarkGray
+                        )
                     }
                 }
             }
@@ -70,7 +92,7 @@ fun CurrencyScreen(
 fun CurrencyCard(currency: CurrencyUI) {
     Card(
         modifier = Modifier.padding(all = 10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.LightGray)
+        colors = CardDefaults.cardColors(containerColor = DarkWight)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -78,11 +100,11 @@ fun CurrencyCard(currency: CurrencyUI) {
         ) {
             Card(
                 modifier = Modifier.padding(all = 4.dp),
-                colors = CardDefaults.cardColors(DarkWight)
+                colors = CardDefaults.cardColors(LightGraySmooth)
             ) {
                 Icon(
                     modifier = Modifier.padding(10.dp),
-                    painter = painterResource(id = com.mouse.wallet.R.drawable.ic_usd),
+                    painter = painterResource(id = currency.iconRes),
                     contentDescription = "Currency icon",
                     tint = Green
                 )

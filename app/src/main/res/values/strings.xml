@@ -8,4 +8,6 @@
     <string name="exchange">Exchange</string>
     <string name="profile">Profile</string>
     <string name="usd_title">United States dollar</string>
+    <string name="approximately_to_usd">≈%.2f$</string>
+    <string name="my_balance">My balance</string>
 </resources>

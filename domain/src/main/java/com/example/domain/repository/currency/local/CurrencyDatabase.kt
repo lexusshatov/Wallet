@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.example.domain.repository.currency.local.data.RatesConverter
 import com.example.domain.repository.currency.local.data.RatesEntity
 
-@Database(entities = [RatesEntity::class], version = 1)
+@Database(entities = [RatesEntity::class], version = 2)
 @TypeConverters(RatesConverter::class)
 abstract class CurrencyDatabase : RoomDatabase() {
     abstract fun getDao(): CurrencyDao

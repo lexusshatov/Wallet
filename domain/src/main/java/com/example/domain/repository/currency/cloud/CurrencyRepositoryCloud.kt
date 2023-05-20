@@ -18,6 +18,13 @@ class CurrencyRepositoryCloud(
         }
 
     override fun rates(base: Currency): Flow<Rates> = flow {
-        emit(currencyService.rates(base))
+        val rates = currencyService.rates(base)
+        val excludeBase = rates.rates
+            .toMutableMap()
+            .apply {
+                remove(rates.base)
+            }
+        val result = rates.copy(rates = excludeBase)
+        emit(result)
     }
 }

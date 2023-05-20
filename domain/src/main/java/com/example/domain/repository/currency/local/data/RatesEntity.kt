@@ -1,5 +1,6 @@
 package com.example.domain.repository.currency.local.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -10,9 +11,9 @@ import kotlinx.serialization.encodeToString
 
 @Entity
 data class RatesEntity(
-    val lastUpdate: Long = 0,
-    @PrimaryKey val base: Currency = Currency.Nothing,
-    val rates: Map<Currency, Double> = emptyMap(),
+    @ColumnInfo(defaultValue = "0") val lastUpdate: Long,
+    @ColumnInfo(defaultValue = "") @PrimaryKey val base: Currency,
+    @ColumnInfo(defaultValue = "{}") val rates: Map<Currency, Double>,
 )
 
 class RatesConverter {

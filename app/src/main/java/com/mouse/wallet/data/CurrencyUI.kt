@@ -1,5 +1,6 @@
 package com.mouse.wallet.data
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.example.data.Currency
 import com.example.data.base.JSON
@@ -11,8 +12,9 @@ import kotlinx.serialization.encodeToString
 @kotlinx.serialization.Serializable
 enum class CurrencyUI(
     @StringRes val titleRes: Int = R.string.usd_title,
+    @DrawableRes val iconRes: Int = R.drawable.ic_usd,
 ) {
-    USD(titleRes = R.string.usd_title),
+    USD(titleRes = R.string.usd_title, iconRes = R.drawable.ic_usd),
     EUR,
     JPY,
     BGN,
